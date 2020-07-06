@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="webpage" nsURI="http://www.w3.org/TR/html4/" nsPrefix="webpage">
+  <eClassifiers xsi:type="ecore:EClass" name="Resource">
+    <eOperations name="notifyUser"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//ResourceType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="connectionType" eType="#//ConnectionType"
+        transient="true" defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="connectionStatus" eType="#//ConnectionStatus"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Servers" eSuperTypes="#//Resource">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sname" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="MaxCapacity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Printer" eSuperTypes="#//Resource">
+    <eOperations name="QueueJob"/>
+    <eOperations name="printJob"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pname" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="QueueId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="QueueStatus" eType="#//QueueStatus"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="QueueJob" lowerBound="1"
+        upperBound="-1" eType="#//JobQueue"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobPriority" eType="#//JobPriority"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Computers" eSuperTypes="#//Resource">
+    <eOperations name="SendJob"/>
+    <eOperations name="SendPrintJob" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cname" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="SendJob" lowerBound="1"
+        upperBound="-1" eType="#//Servers"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="SendPrintJob" lowerBound="1"
+        upperBound="-1" eType="#//Printer" eKeys="#//Printer/jobPriority #//Resource/rid"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JobQueue">
+    <eOperations name="UpdateQueueStatus"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Status" eType="#//JobStatus"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="JobDuration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="UserId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Priority" eType="#//JobPriority"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="UpdateQueueStatus" lowerBound="1"
+        eType="#//Printer"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Users">
+    <eOperations name="Job"/>
+    <eOperations name="configureResource"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//UserType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="configureResource" lowerBound="1"
+        upperBound="-1" eType="#//Resource"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Job" lowerBound="1" upperBound="-1"
+        eType="#//Computers"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="User" eSuperTypes="#//Users">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="usid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uname" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Administrator" eSuperTypes="#//Users">
+    <eOperations name="createUser"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aname" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createUser" lowerBound="1"
+        upperBound="-1" eType="#//User"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ConnectionType">
+    <eLiterals name="Hub" literal="0"/>
+    <eLiterals name="NetworkCable" value="1" literal="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ConnectionStatus">
+    <eLiterals name="Connected" literal="0"/>
+    <eLiterals name="Disconnected" literal="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JobPriority">
+    <eLiterals name="Urgent" literal="0"/>
+    <eLiterals name="Normal" value="1" literal="1"/>
+    <eLiterals name="Low" value="2" literal="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="QueueStatus">
+    <eLiterals name="Available" literal="0"/>
+    <eLiterals name="NotAvailable" value="1" literal="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JobStatus">
+    <eLiterals name="Waiting" literal="0"/>
+    <eLiterals name="InProgress" value="1" literal="1"/>
+    <eLiterals name="Completed" value="2" literal="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ResourceType">
+    <eLiterals name="Computers" literal="0"/>
+    <eLiterals name="Servers" value="1" literal="1"/>
+    <eLiterals name="Printers" value="2" literal="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="UserType">
+    <eLiterals name="Admin" literal="0"/>
+    <eLiterals name="User" value="1" literal="1"/>
+  </eClassifiers>
+</ecore:EPackage>
